@@ -2,8 +2,13 @@
 
 #include "ofMain.h"
 #include "ofxMarchingCubes.h"
+#include "MetaBall.h"
+#include "ofxSTL.h"
 
-class testApp : public ofBaseApp{
+#define NUM_META_BALLS 10
+
+
+class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
@@ -20,12 +25,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     ofxMarchingCubes marchingCubes;
-	ofLight light;
-    ofEasyCam cam;
-    
-    bool bShowCubes;
-    ofMesh mesh;
-    
-    bool bSaveModel;
-    bool bModelRendered;
+	ofLight light, reflections;
+	vector<MetaBall> metaBalls;
+	bool bSaveModel;
 };
