@@ -1,5 +1,4 @@
 #include "ofApp.h"
-#include "ofAppGlutWindow.h"
 
 //--------------------------------------------------------------
 int main(){

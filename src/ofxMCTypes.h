@@ -23,4 +23,4 @@
 #include "ofMain.h"
 
 typedef vector<vector<vector<float> > > ofxMCGridValues;
-typedef vector<vector<vector<ofPoint> > > ofxMCGridPoints;
+typedef vector<vector<vector<glm::vec3> > > ofxMCGridPoints;

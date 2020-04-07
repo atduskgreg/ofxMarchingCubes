@@ -29,7 +29,7 @@ ofxMarchingCubes::~ofxMarchingCubes(){
 	clear();
 }
 
-void ofxMarchingCubes::init(const ofPoint& _iniGridPos,const ofPoint& _gridSize, unsigned int _gridResX, unsigned int _gridResY,unsigned int _gridResZ){
+void ofxMarchingCubes::init(const glm::vec3& _iniGridPos,const glm::vec3& _gridSize, unsigned int _gridResX, unsigned int _gridResY,unsigned int _gridResZ){
 	iniGridPos = _iniGridPos;
 	gridResX = MAX(2, _gridResX);
 	gridResY = MAX(2, _gridResY);
@@ -122,7 +122,7 @@ void ofxMarchingCubes::drawGrid(){
 		for(int j=0; j<gridResY; j++){
 			glBegin(GL_LINE_STRIP);
 			for(int k=0; k<gridResZ; k++){
-				ofPoint& p = gridPoints[i][j][k];
+				glm::vec3& p = gridPoints[i][j][k];
 				glVertex3f(p.x, p.y, p.z);
 			}
 			glEnd();
@@ -132,7 +132,7 @@ void ofxMarchingCubes::drawGrid(){
 		for(int j=0; j<gridResY; j++){
 			glBegin(GL_LINE_STRIP);
 			for(int k=0; k<gridResX; k++){
-				ofPoint& p = gridPoints[k][j][i];
+				glm::vec3& p = gridPoints[k][j][i];
 				glVertex3f(p.x, p.y, p.z);
 			}
 			glEnd();
@@ -142,7 +142,7 @@ void ofxMarchingCubes::drawGrid(){
 		for(int j=0; j<gridResX; j++){
 			glBegin(GL_LINE_STRIP);
 			for(int k=0; k<gridResY; k++){
-				ofPoint& p = gridPoints[j][k][i];
+				glm::vec3& p = gridPoints[j][k][i];
 				glVertex3f(p.x, p.y, p.z);
 			}
 			glEnd();
@@ -150,9 +150,9 @@ void ofxMarchingCubes::drawGrid(){
 	}
 }
 
-void ofxMarchingCubes::addMetaBall(const ofPoint& pos, float force){
+void ofxMarchingCubes::addMetaBall(const glm::vec3& pos, float force){
 	float distSQ;
-	ofPoint diff;
+	glm::vec3 diff;
 	for(int i=0; i<gridResX; i++){
 		for(int j=0; j<gridResY; j++){
 			for(int k=0; k<gridResZ; k++){
@@ -300,11 +300,11 @@ float ofxMarchingCubes::getThreshold(){
 	return threshold;	
 }
 
-vector<ofPoint>& ofxMarchingCubes::getVertices(){
+vector<glm::vec3>& ofxMarchingCubes::getVertices(){
 	return vertices;	
 }
 
-vector<ofPoint>& ofxMarchingCubes::getNormals(){
+vector<glm::vec3>& ofxMarchingCubes::getNormals(){
 	return normals;	
 }
 
@@ -316,12 +316,12 @@ ofxMCGridPoints& ofxMarchingCubes::getGrid(){
 	return gridPoints;	
 }
 
-void ofxMarchingCubes::setGridPos(const ofPoint& _gridPos){
+void ofxMarchingCubes::setGridPos(const glm::vec3& _gridPos){
 	if(_gridPos.x == iniGridPos.x and _gridPos.y == iniGridPos.y and _gridPos.z == iniGridPos.z) return;
 	
 }
 
-void ofxMarchingCubes::setGridSize(const ofPoint& _gridSize){
+void ofxMarchingCubes::setGridSize(const glm::vec3& _gridSize){
 	if(_gridSize.x == gridSize.x and _gridSize.y == gridSize.y and _gridSize.z == gridSize.z)return;
 	clear();
 	gridSize = _gridSize;
@@ -337,16 +337,16 @@ void ofxMarchingCubes::setGridRes(unsigned int _gridResX, unsigned int _gridResY
 	setupGrid();
 }
 
-ofPoint ofxMarchingCubes::getGridPos(){
+glm::vec3 ofxMarchingCubes::getGridPos(){
 	return iniGridPos;
 }
 
-ofPoint ofxMarchingCubes::getGridSize(){
+glm::vec3 ofxMarchingCubes::getGridSize(){
 	return gridSize;	
 }
 
-ofPoint ofxMarchingCubes::getGridRes(){
-	return ofPoint(gridResX, gridResY, gridResZ);
+glm::vec3 ofxMarchingCubes::getGridRes(){
+	return glm::vec3(gridResX, gridResY, gridResZ);
 }
 
 void ofxMarchingCubes::saveModel(string fileName, bool bUseASCII_mode){
@@ -364,15 +364,15 @@ ofxSTLExporter& ofxMarchingCubes::getSTLExporter(){
 }
 
 void ofxMarchingCubes::setupGrid(){
-	ofPoint gap(gridSize.x / (gridResX-1), gridSize.y / (gridResY-1), gridSize.z / (gridResZ-1));
-	ofPoint gridShift = gridSize * -0.5f;
+	glm::vec3 gap(gridSize.x / (gridResX-1), gridSize.y / (gridResY-1), gridSize.z / (gridResZ-1));
+	glm::vec3 gridShift = gridSize * -0.5f;
 	gridPoints.resize(gridResX);
 	for(int i=0; i<gridResX; ++i){
 		gridPoints[i].resize(gridResY);
 		for(int j=0; j<gridResY; ++j){
 			gridPoints[i][j].resize(gridResZ);
 			for(int k=0; k<gridResZ; ++k){
-				gridPoints[i][j][k].set(i*gap.x, j*gap.y, k*gap.z);
+				gridPoints[i][j][k] = glm::vec3(i*gap.x, j*gap.y, k*gap.z);
 				gridPoints[i][j][k] += gridShift;
 				gridPoints[i][j][k] += iniGridPos;
 			}
@@ -392,18 +392,18 @@ void ofxMarchingCubes::setupGrid(){
 	numTriangles = 0;	
 }
 
-void ofxMarchingCubes::vertexInterp(float threshold,const ofPoint& p1,const ofPoint& p2, float valp1, float valp2, ofPoint& theVertice){
+void ofxMarchingCubes::vertexInterp(float threshold,const glm::vec3& p1,const glm::vec3& p2, float valp1, float valp2, glm::vec3& theVertice){
 	float mu;
 	if (ABS(threshold-valp1) < 0.00001){
-		theVertice.set(p1.x, p1.y, p1.z);
+		theVertice = glm::vec3(p1.x, p1.y, p1.z);
 		return;
 	}
 	if (ABS(threshold-valp2) < 0.00001){
-		theVertice.set(p2.x, p2.y, p2.z);
+		theVertice = glm::vec3(p2.x, p2.y, p2.z);
 		return;
 	}
 	if (ABS(valp1-valp2) < 0.00001){
-		theVertice.set(p1.x, p1.x, p1.z);
+		theVertice = glm::vec3(p1.x, p1.x, p1.z);
 		return;
 	}
 	mu = (threshold - valp1) / (valp2 - valp1);
@@ -466,18 +466,18 @@ void ofxMarchingCubes::polygonise(unsigned int i, unsigned int j, unsigned int k
 	}
 	for (i=0;triTable[cubeindex][i]!=-1;i+=3) {
 		if(bCalcNormals){
-			ofVec3f a = vertList[triTable[cubeindex][i+1]] - vertList[triTable[cubeindex][i]];
-			ofVec3f b = vertList[triTable[cubeindex][i+2]] - vertList[triTable[cubeindex][i+1]];
+			glm::vec3 a = vertList[triTable[cubeindex][i+1]] - vertList[triTable[cubeindex][i]];
+			glm::vec3 b = vertList[triTable[cubeindex][i+2]] - vertList[triTable[cubeindex][i+1]];
 			//cross product - a cross b
-			ofVec3f normalVec = a.crossed(b);   
-			normalVec.normalize();
+			glm::vec3 normalVec = glm::cross(a, b);
+            normalVec = glm::normalize(normalVec);
 			normals.push_back(normalVec);
 			normals.push_back(normalVec);
 			normals.push_back(normalVec);
 		}
-		vertices.push_back(ofPoint(vertList[triTable[cubeindex][i]].x, vertList[triTable[cubeindex][i]].y, vertList[triTable[cubeindex][i]].z));
-		vertices.push_back(ofPoint(vertList[triTable[cubeindex][i+1]].x, vertList[triTable[cubeindex][i+1]].y, vertList[triTable[cubeindex][i+1]].z));
-		vertices.push_back(ofPoint(vertList[triTable[cubeindex][i+2]].x, vertList[triTable[cubeindex][i+2]].y, vertList[triTable[cubeindex][i+2]].z));
+		vertices.push_back(glm::vec3(vertList[triTable[cubeindex][i]].x, vertList[triTable[cubeindex][i]].y, vertList[triTable[cubeindex][i]].z));
+		vertices.push_back(glm::vec3(vertList[triTable[cubeindex][i+1]].x, vertList[triTable[cubeindex][i+1]].y, vertList[triTable[cubeindex][i+1]].z));
+		vertices.push_back(glm::vec3(vertList[triTable[cubeindex][i+2]].x, vertList[triTable[cubeindex][i+2]].y, vertList[triTable[cubeindex][i+2]].z));
 		numTriangles++;
 	}	
 }
