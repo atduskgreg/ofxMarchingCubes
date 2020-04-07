@@ -112,7 +112,7 @@ void ofxMarchingCubes::drawCube(){
 	glScalef(gridSize.x, gridSize.y, gridSize.z);
     ofPushStyle();
     ofNoFill();
-    ofBox(1.0f);
+    ofDrawBox(1.0f);
     ofPopStyle();
 	glPopMatrix();
 }
