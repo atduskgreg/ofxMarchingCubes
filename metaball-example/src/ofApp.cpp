@@ -4,8 +4,8 @@
 void ofApp::setup(){
 	ofBackground(250,250,250);
 	ofSetVerticalSync(true);
-	ofPoint iniPos(0,0,0); //the position is refering to the center of the grid
-	ofPoint gridSize(1000, 1000, 1000);
+	glm::vec3 iniPos(0,0,0); //the position is refering to the center of the grid
+	glm::vec3 gridSize(1000, 1000, 1000);
 	int gridResX = 30;
 	int gridResY = 30;
 	int gridResZ = 30;
@@ -31,8 +31,8 @@ void ofApp::update(){
 	float counter = ((float)ofGetFrameNum()) * 0.01f;
 	float threshold = ((float)mouseX / ofGetWidth());
 	marchingCubes.resetIsoValues();
-	ofPoint force;
-	ofPoint gridCenter = marchingCubes.getGridPos();
+	glm::vec3 force;
+	glm::vec3 gridCenter = marchingCubes.getGridPos();
 	float randomStep = 10;
 	for(int i=0; i<metaBalls.size(); i++){
 		force.x = ofRandom(-randomStep, randomStep);
@@ -55,14 +55,14 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-	ofPoint center(ofGetWidth()*0.5f, ofGetHeight()*0.5f, -1000);
-	ofPoint gridSize = marchingCubes.getGridSize();
+	glm::vec3 center(ofGetWidth()*0.5f, ofGetHeight()*0.5f, -1000);
+	glm::vec3 gridSize = marchingCubes.getGridSize();
 	float counter = (float)ofGetFrameNum();
     
 	ofPushMatrix();
 	ofTranslate(center.x, center.y, center.z);
-	ofRotate(counter*0.05f, 1.0f, 0.0f, 0.0f);
-	ofRotate(counter*0.1f, 0.0f, 1.0f, 0.0f);
+	ofRotateDeg(counter*0.05f, 1.0f, 0.0f, 0.0f);
+	ofRotateDeg(counter*0.1f, 0.0f, 1.0f, 0.0f);
     
 	ofSetColor(0.0f, 0.0f, 0.0f);    
 	marchingCubes.debugDraw();
