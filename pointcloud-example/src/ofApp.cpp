@@ -1,11 +1,11 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void ofApp::setup(){
 	ofBackground(250,250,250);
 	ofSetVerticalSync(true);
-	ofPoint iniPos(0,0,0); //the position is refering to the center of the grid
-	ofPoint gridSize(480, 480, 480);
+	glm::vec3 iniPos(0,0,0); //the position is refering to the center of the grid
+	glm::vec3 gridSize(480, 480, 480);
 	int gridResX = 70;
 	int gridResY = 70;
 	int gridResZ = 70;
@@ -13,7 +13,7 @@ void testApp::setup(){
     	
     // populate mesh from image with alpha values
     ofImage img;
-	img.loadImage("linzer.png");
+	img.load("linzer.png");
 	mesh.setMode(OF_PRIMITIVE_POINTS);
 	for(int y = 0; y < img.getHeight(); y+=2) {
 		for(int x = 0; x < img.getWidth(); x+=2) {
@@ -23,7 +23,7 @@ void testApp::setup(){
 				float z = ofMap(cur.a, 0, 255, -480, 480);
 				cur.a = 255;
 				mesh.addColor(cur);
-				ofVec3f pos(x - img.getWidth() / 2, y - img.getHeight() / 2, z);
+				glm::vec3 pos(x - img.getWidth() / 2, y - img.getHeight() / 2, z);
 				mesh.addVertex(pos);
 			}
 		}
@@ -44,17 +44,17 @@ void testApp::setup(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void ofApp::update(){
 
     if(bShowCubes && !bModelRendered){
     
         marchingCubes.resetIsoValues();
     
-        vector<ofVec3f> vertices = mesh.getVertices();
+        vector<glm::vec3> vertices = mesh.getVertices();
     
         for(int i=0; i<mesh.getNumVertices(); i+=20){
             ofVec3f vertex = vertices.at(i);
-            ofPoint p = ofPoint(vertex.x, vertex.y, vertex.z );
+            glm::vec3 p = glm::vec3(vertex.x, vertex.y, vertex.z );
             marchingCubes.addMetaBall(p, 0.2);
         }
 	
@@ -77,7 +77,7 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void ofApp::draw(){
     ofBackground(125, 125, 125);
     
 
@@ -104,7 +104,7 @@ void testApp::draw(){
 
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
+void ofApp::keyReleased(int key){
     if(key == ' '){
         bShowCubes = !bShowCubes;
     }
@@ -113,11 +113,11 @@ void testApp::keyReleased(int key){
         bSaveModel = true;
     }
 }
-void testApp::keyPressed(int key){}
-void testApp::mouseMoved(int x, int y){}
-void testApp::mouseDragged(int x, int y, int button){}
-void testApp::mousePressed(int x, int y, int button){}
-void testApp::mouseReleased(int x, int y, int button){}
-void testApp::windowResized(int w, int h){}
-void testApp::gotMessage(ofMessage msg){}
-void testApp::dragEvent(ofDragInfo dragInfo){ }
+void ofApp::keyPressed(int key){}
+void ofApp::mouseMoved(int x, int y){}
+void ofApp::mouseDragged(int x, int y, int button){}
+void ofApp::mousePressed(int x, int y, int button){}
+void ofApp::mouseReleased(int x, int y, int button){}
+void ofApp::windowResized(int w, int h){}
+void ofApp::gotMessage(ofMessage msg){}
+void ofApp::dragEvent(ofDragInfo dragInfo){ }

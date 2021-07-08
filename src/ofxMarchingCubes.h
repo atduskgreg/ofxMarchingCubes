@@ -31,7 +31,7 @@ class ofxMarchingCubes{
 public:
 	ofxMarchingCubes();
 	virtual ~ofxMarchingCubes();
-	void init(const ofPoint& _iniGridPos, const ofPoint& gridSize, unsigned int _gridResX,unsigned int _gridResY,unsigned int _gridResZ);
+	void init(const glm::vec3& _iniGridPos, const glm::vec3& gridSize, unsigned int _gridResX,unsigned int _gridResY,unsigned int _gridResZ);
 	void clear();
 	void update(float _threshold, bool bCalcNormals = false);
 	virtual void draw(){debugDraw();}
@@ -40,7 +40,7 @@ public:
 	void drawFilled();
 	void drawCube();
 	void drawGrid();
-	void addMetaBall(const ofPoint& pos, float force);
+	void addMetaBall(const glm::vec3& pos, float force);
 	void setIsoValue(unsigned int gridX, unsigned int gridY, unsigned int gridZ, float value);
 	float getIsoValue(unsigned int gridX, unsigned int gridY, unsigned int gridZ);
 	void resetIsoValues(); //set all values to 0
@@ -54,17 +54,17 @@ public:
 	void absoluteValues();
 	int getNumTriangles();
 	float getThreshold();
-	vector<ofPoint>& getVertices();
-	vector<ofPoint>& getNormals();
+	vector<glm::vec3>& getVertices();
+	vector<glm::vec3>& getNormals();
 	ofxMCGridValues& getIsoValues();
 	ofxMCGridPoints& getGrid();
-	void setGridPos(const ofPoint& _gridPos);
-	void setGridSize(const ofPoint& _gridSize);
+	void setGridPos(const glm::vec3& _gridPos);
+	void setGridSize(const glm::vec3& _gridSize);
 	void setGridRes(unsigned int gridResX, unsigned int gridResY, unsigned int gridResZ);
-	ofPoint getGridPos();
-	ofPoint getGridSize();
-	ofPoint getGridRes();
-	
+	glm::vec3 getGridPos();
+	glm::vec3 getGridSize();
+	glm::vec3 getGridRes();
+
 	void saveModel(string fileName, bool bUseASCII_mode = false);
 	ofxSTLExporter& getSTLExporter();
 	
@@ -72,18 +72,18 @@ protected:
 	ofxSTLExporter stlExporter;
 	void setupGrid();
 	int gridResX, gridResY, gridResZ;
-	ofPoint iniGridPos; 
-	ofPoint gridSize;
+	glm::vec3 iniGridPos;
+	glm::vec3 gridSize;
 	int numTriangles; 
 	float threshold; 
-	vector<ofPoint>vertices;
-	vector<ofPoint>normals;
-	ofPoint vertList[12];
+	vector<glm::vec3>vertices;
+	vector<glm::vec3>normals;
+	glm::vec3 vertList[12];
 	
 	ofxMCGridValues isoValues;
 	ofxMCGridPoints gridPoints;
 	
-	void vertexInterp(float isoLevel,const ofPoint& p1, const ofPoint& p2, float valp1, float valp2, ofPoint& theVertice);
+	void vertexInterp(float isoLevel,const glm::vec3& p1, const glm::vec3& p2, float valp1, float valp2, glm::vec3& theVertice);
 	void polygonise(uint i, uint j, uint k, bool bCalcNormals);
 };
 
